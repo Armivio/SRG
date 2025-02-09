@@ -29,9 +29,18 @@ class TestLeafNode(unittest.TestCase):
         self.assertEqual(node.to_html(), expected)
 
     def test_print_image(self):
-        node = LeafNode(TextType.IMAGE, "Description of image", {"img src":"url/of/image.jpg", "alt":"Description of image"})
+        node = LeafNode(TextType.IMAGE, "Bad description of image", {"img src":"url/of/image.jpg", "alt":"Description of image"})
         expected = '<img src="url/of/image.jpg" alt="Description of image">'
         self.assertEqual(node.to_html(), expected)
+
+    def test_to_html_no_children(self):
+        node = LeafNode(TextType.NORMAL, "Hello, world!")
+        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+
+    def test_to_html_no_tag(self):
+        node = LeafNode(None, "Hello, world!")
+        self.assertEqual(node.to_html(), "Hello, world!")
+
 
 
 if __name__ == "__main__":
