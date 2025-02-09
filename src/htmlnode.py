@@ -1,3 +1,5 @@
+from textnode import TextType
+
 class HTMLNode:
     def __init__(self, tag=None, value=None, children=None, props=None):
         self.tag = tag # A string representing the HTML tag name (e.g. “p”, “a”, “h1”, etc.)
@@ -21,3 +23,61 @@ class HTMLNode:
     def __repr__(self):
         return f"HTMLNode(tag={self.tag}, value={self.value}, children={self.children}, props={self.props})"
 
+class LeafNode(HTMLNode):
+    def __init__(self, tag, value, props=None):
+        super().__init__(tag, value, children=None, props=props)
+        
+    def to_html(self):
+        if self.value == None:
+            raise ValueError("Leaf node has no value!")
+        if self.tag == None:
+            return self.value
+        
+        match self.tag:
+            case TextType.NORMAL:
+                return f"<p>{self.value}</p>"
+            case TextType.BOLD:
+                return f"<b>{self.value}</b>"
+            case TextType.ITALIC:
+                return f"<i>{self.value}</i>"
+            case TextType.CODE:
+                return f"<code>{self.value}</code>"
+            case TextType.LINK:
+                return f"<a{self.props_to_html()}>{self.value}</a>"
+            case TextType.IMAGE:
+                return f"<{self.props_to_html()[1:]}>"
+            case _:
+                raise Exception("Unexpected tag!")
+        
+class ParentNode(HTMLNode):
+    def __init__(self, tag, children, value=None, props=None):
+        super().__init__(tag, value=None, children=children, props=props)
+
+    def to_html(self):
+        if not self.tag:
+            raise ValueError("No tag present!")
+        if not self.children:
+            raise ValueError("It's a parent with no children!")
+        if len(self.children) == 0:
+            raise ValueError("It's a parent with no children!")
+        final_value = ""
+        for child in self.children:
+            final_value += child.to_html()
+
+        match self.tag:
+            case TextType.NORMAL:
+                return f"<p>{final_value}</p>"
+            case TextType.BOLD:
+                return f"<b>{final_value}</b>"
+            case TextType.ITALIC:
+                return f"<i>{final_value}</i>"
+            case TextType.CODE:
+                return f"<code>{final_value}</code>"
+            case TextType.LINK:
+                return f"<a{self.props_to_html()}>{final_value}</a>"
+            case TextType.IMAGE:
+                # return f"<{self.props_to_html()[1:]}>"
+                raise Exception("Can images have children?")
+            case _:
+                raise Exception("Unexpected tag!")
+        

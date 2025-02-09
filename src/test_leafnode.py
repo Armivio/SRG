@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextNode, TextType
-from leafnode import LeafNode
+from htmlnode import LeafNode
 
 class TestLeafNode(unittest.TestCase):
     def test_print_normal(self):
