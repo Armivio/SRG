@@ -83,5 +83,136 @@ class TestSplitNodesDelimiter(unittest.TestCase):
     #    # Expected: no splitting, even though the text contains the delimiter.
     #     self.assertEqual(result, [node])
 
+# Replace 'your_module' with the actual module name where your functions are defined.
+
+# --- Tests for Images ---
+
+    def test_split_nodes_image_no_image(self):
+        # No markdown image present → should return the original node.
+        text = "This is some text without any image."
+        node = TextNode(text, TextType.TEXT)
+        result = split_nodes_image([node])
+        
+        self.assertEqual(result, [node])
+
+    def test_split_nodes_image_only_image(self):
+        # The node consists solely of an image markdown.
+        text = "![alt](http://example.com/image.png)"
+        node = TextNode(text, TextType.TEXT)
+        expected = [TextNode("alt", TextType.IMAGE, "http://example.com/image.png")]
+        result = split_nodes_image([node])
+        self.assertEqual(result, expected)
+
+    def test_split_nodes_image_image_at_beginning(self):
+        # The image markdown appears at the very beginning.
+        text = "![alt](http://example.com/image.png) suffix text"
+        node = TextNode(text, TextType.TEXT)
+        expected = [
+            TextNode("alt", TextType.IMAGE, "http://example.com/image.png"),
+            TextNode(" suffix text", TextType.TEXT)
+        ]
+        result = split_nodes_image([node])
+        self.assertEqual(result, expected)
+
+    def test_split_nodes_image_image_at_end(self):
+        # The image markdown appears at the end.
+        text = "prefix text ![alt](http://example.com/image.png)"
+        node = TextNode(text, TextType.TEXT)
+        expected = [
+            TextNode("prefix text ", TextType.TEXT),
+            TextNode("alt", TextType.IMAGE, "http://example.com/image.png")
+        ]
+        result = split_nodes_image([node])
+        self.assertEqual(result, expected)
+
+    def test_split_nodes_image_multiple_images(self):
+        # Two images in one node, with text before, between, and after.
+        text = "Start ![img1](http://example.com/1.png) Middle ![img2](http://example.com/2.png) End"
+        node = TextNode(text, TextType.TEXT)
+        expected = [
+            TextNode("Start ", TextType.TEXT),
+            TextNode("img1", TextType.IMAGE, "http://example.com/1.png"),
+            TextNode(" Middle ", TextType.TEXT),
+            TextNode("img2", TextType.IMAGE, "http://example.com/2.png"),
+            TextNode(" End", TextType.TEXT)
+        ]
+        result = split_nodes_image([node])
+        self.assertEqual(result, expected)
+
+    def test_split_nodes_image_consecutive_images(self):
+        # Two images with no text in between; empty text nodes should be omitted.
+        text = "![img1](http://example.com/1.png)![img2](http://example.com/2.png)"
+        node = TextNode(text, TextType.TEXT)
+        expected = [
+            TextNode("img1", TextType.IMAGE, "http://example.com/1.png"),
+            TextNode("img2", TextType.IMAGE, "http://example.com/2.png")
+        ]
+        result = split_nodes_image([node])
+        self.assertEqual(result, expected)
+
+    # --- Tests for Links ---
+
+    def test_split_nodes_link_no_link(self):
+        # No markdown link → returns original node.
+        text = "This is some text without any link."
+        node = TextNode(text, TextType.TEXT)
+        result = split_nodes_link([node])
+        assert result == [node]
+
+    def test_split_nodes_link_only_link(self):
+        # The node consists solely of a link markdown.
+        text = "[boot.dev](https://www.boot.dev)"
+        node = TextNode(text, TextType.TEXT)
+        expected = [TextNode("boot.dev", TextType.LINK, "https://www.boot.dev")]
+        result = split_nodes_link([node])
+        assert result == expected
+
+    def test_split_nodes_link_link_at_beginning(self):
+        # The link appears at the beginning.
+        text = "[boot.dev](https://www.boot.dev) and some text"
+        node = TextNode(text, TextType.TEXT)
+        expected = [
+            TextNode("boot.dev", TextType.LINK, "https://www.boot.dev"),
+            TextNode(" and some text", TextType.TEXT)
+        ]
+        result = split_nodes_link([node])
+        assert result == expected
+
+    def test_split_nodes_link_link_at_end(self):
+        # The link appears at the end.
+        text = "Some text and then [youtube](https://www.youtube.com)"
+        node = TextNode(text, TextType.TEXT)
+        expected = [
+            TextNode("Some text and then ", TextType.TEXT),
+            TextNode("youtube", TextType.LINK, "https://www.youtube.com")
+        ]
+        result = split_nodes_link([node])
+        assert result == expected
+
+    def test_split_nodes_link_multiple_links(self):
+        # Two links separated by text.
+        text = "A [first](https://first.com) and [second](https://second.com) link"
+        node = TextNode(text, TextType.TEXT)
+        expected = [
+            TextNode("A ", TextType.TEXT),
+            TextNode("first", TextType.LINK, "https://first.com"),
+            TextNode(" and ", TextType.TEXT),
+            TextNode("second", TextType.LINK, "https://second.com"),
+            TextNode(" link", TextType.TEXT)
+        ]
+        result = split_nodes_link([node])
+        assert result == expected
+
+    def test_split_nodes_link_consecutive_links(self):
+        # Two links with no intervening text.
+        text = "[first](https://first.com)[second](https://second.com)"
+        node = TextNode(text, TextType.TEXT)
+        expected = [
+            TextNode("first", TextType.LINK, "https://first.com"),
+            TextNode("second", TextType.LINK, "https://second.com")
+        ]
+        result = split_nodes_link([node])
+        assert result == expected
+
 if __name__ == '__main__':
     unittest.main()
