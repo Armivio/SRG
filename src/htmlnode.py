@@ -34,7 +34,7 @@ class LeafNode(HTMLNode):
             return self.value
         
         match self.tag:
-            case TextType.NORMAL:
+            case TextType.TEXT:
                 return f"<p>{self.value}</p>"
             case TextType.BOLD:
                 return f"<b>{self.value}</b>"
@@ -65,7 +65,7 @@ class ParentNode(HTMLNode):
             final_value += child.to_html()
 
         match self.tag:
-            case TextType.NORMAL:
+            case TextType.TEXT:
                 return f"<p>{final_value}</p>"
             case TextType.BOLD:
                 return f"<b>{final_value}</b>"

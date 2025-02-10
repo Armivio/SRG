@@ -4,7 +4,7 @@ from htmlnode import LeafNode
 
 class TestLeafNode(unittest.TestCase):
     def test_print_normal(self):
-        node = LeafNode(TextType.NORMAL, "This is a paragraph of text.")
+        node = LeafNode(TextType.TEXT, "This is a paragraph of text.")
         expected = "<p>This is a paragraph of text.</p>"
         self.assertEqual(node.to_html(), expected)
 
@@ -34,7 +34,7 @@ class TestLeafNode(unittest.TestCase):
         self.assertEqual(node.to_html(), expected)
 
     def test_to_html_no_children(self):
-        node = LeafNode(TextType.NORMAL, "Hello, world!")
+        node = LeafNode(TextType.TEXT, "Hello, world!")
         self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
 
     def test_to_html_no_tag(self):

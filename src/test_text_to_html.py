@@ -4,7 +4,7 @@ from text_to_html import text_node_to_html_node
 
 class TestTextNodeToHTML(unittest.TestCase):
     def test_text_node_to_html_text(self):
-        node = TextNode("Hello, world!", TextType.NORMAL)
+        node = TextNode("Hello, world!", TextType.TEXT)
         html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, None)
         self.assertEqual(html_node.value, "Hello, world!")

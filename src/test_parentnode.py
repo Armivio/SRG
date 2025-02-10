@@ -5,7 +5,7 @@ from textnode import TextType
 class TestParentNode(unittest.TestCase):
     def test_parent_without_tag(self):
         # Test that initializing without a tag raises an error
-        leaf = LeafNode(TextType.NORMAL, "Test text")
+        leaf = LeafNode(TextType.TEXT, "Test text")
         with self.assertRaises(ValueError):
             node = ParentNode(None, [leaf])
             node.to_html()
@@ -13,7 +13,7 @@ class TestParentNode(unittest.TestCase):
     def test_parent_without_children(self):
         # Test that initializing without children raises an error
         with self.assertRaises(ValueError):
-            node = ParentNode(TextType.NORMAL, children=[])
+            node = ParentNode(TextType.TEXT, children=[])
             node.to_html()
 
     def test_normal_parent(self):
@@ -21,7 +21,7 @@ class TestParentNode(unittest.TestCase):
         child1 = LeafNode(None, "First")
         child2 = LeafNode(None, " and ")
         child3 = LeafNode(None, "second")
-        parent = ParentNode(TextType.NORMAL, [child1, child2, child3])
+        parent = ParentNode(TextType.TEXT, [child1, child2, child3])
         expected = "<p>First and second</p>"
         self.assertEqual(parent.to_html(), expected)
 
