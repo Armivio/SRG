@@ -6,6 +6,10 @@ from textnode import *
 from extractors import extract_markdown_images, extract_markdown_links
 
 def split_one_node(node, delimiter, text_type):
+    if len(node.text) == 0:
+        return []
+    if node.text_type == TextType.IMAGE or node.text_type == TextType.LINK:
+        return [node]
     if node.text.count(delimiter) % 2: # if the number of delimiters is odd, e.g. we only have *this
         raise Exception(f"Invalid Markdown Syntax with delimiter {delimiter}")
     # we distinguish 4 cases: *text*, *tex*t, t*ext*, t*ex*t

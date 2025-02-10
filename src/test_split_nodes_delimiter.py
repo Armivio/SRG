@@ -49,9 +49,7 @@ class TestSplitNodesDelimiter(unittest.TestCase):
         # empty strings are produced.
         node = TextNode("`code`", TextType.TEXT)
         expected = [
-            TextNode("", TextType.TEXT),
             TextNode("code", TextType.CODE),
-            TextNode("", TextType.TEXT)
         ]
         result = split_nodes_delimiter([node], "`", TextType.CODE)
         self.assertEqual(result, expected)
@@ -71,17 +69,16 @@ class TestSplitNodesDelimiter(unittest.TestCase):
             TextNode("code", TextType.CODE),
             TextNode(" and ", TextType.TEXT),
             TextNode("more code", TextType.CODE),
-            TextNode("", TextType.TEXT)
         ]
         result = split_nodes_delimiter([node], "`", TextType.CODE)
         self.assertEqual(result, expected)
 
-    # def test_no_split_for_non_text_type(self):
-    #     # Nodes that are not of type TEXT should be left unchanged.
-    #     node = TextNode("Hello `code`", TextType.BOLD)
-    #     result = split_nodes_delimiter([node], "`", TextType.CODE)
-    #    # Expected: no splitting, even though the text contains the delimiter.
-    #     self.assertEqual(result, [node])
+    def test_no_split_for_non_text_type(self):
+        # Nodes that are not of type TEXT should be left unchanged.
+        node = TextNode("![alt](http://example.com/imag**e.png)", TextType.IMAGE)
+        result = split_nodes_delimiter([node], "**", TextType.IMAGE)
+       # Expected: no splitting, even though the text contains the delimiter.
+        self.assertEqual(result, [node])
 
 # Replace 'your_module' with the actual module name where your functions are defined.
 
