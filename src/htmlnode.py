@@ -78,6 +78,10 @@ class ParentNode(HTMLNode):
             case TextType.IMAGE:
                 # return f"<{self.props_to_html()[1:]}>"
                 raise Exception("Can images have children?")
+            case "content":
+                return final_value
             case _:
-                raise Exception("Unexpected tag!")
-        
+                return f"<{self.tag}>{final_value}</{self.tag}>"
+                #raise Exception("Unexpected tag!")
+            # case _ if self.tag.startswith("h") and self.tag[1:].isdigit():
+                # return f"<{self.tag}>{final_value}</{self.tag}>"

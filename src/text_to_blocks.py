@@ -10,12 +10,12 @@ def block_to_block_type(block):
     count = 0
     while (block[count] == '#'):
         count += 1
-    if block[count] == ' ':
+    if block[count] == ' ' and count <= 6:
         return f"h{count}"
     
     # check if code
     if block[0] == block[1] == block[2] == block[-1] == block[-2] == block[-3] == '`':
-        return "code"
+        return "pre"
     
      # check if quote
     if (block[0] == '>'):
