@@ -1,0 +1,62 @@
+import unittest
+from text_to_blocks import block_to_block_type
+
+class TestBlockToBlockType(unittest.TestCase):
+    def test_heading(self):
+        # Valid headings
+        self.assertEqual(block_to_block_type("# Heading"), "h1")
+        self.assertEqual(block_to_block_type("## Heading"), "h2")
+        self.assertEqual(block_to_block_type("### Heading"), "h3")
+        self.assertEqual(block_to_block_type("#### Heading"), "h4")
+        self.assertEqual(block_to_block_type("##### Heading"), "h5")
+        self.assertEqual(block_to_block_type("###### Heading"), "h6")
+        # Missing space after '#' characters is not a valid heading.
+        self.assertEqual(block_to_block_type("###Heading"), "p")
+
+    def test_code(self):
+        # Single-line code block.
+        self.assertEqual(block_to_block_type("```code```"), "code")
+        # Multi-line code block.
+        code_block = "```\nprint('Hello, world!')\n```"
+        self.assertEqual(block_to_block_type(code_block), "code")
+    
+    def test_quote(self):
+        # Single-line quote block.
+        self.assertEqual(block_to_block_type("> This is a quote"), "blockquote")
+        # Multi-line quote block.
+        multi_line_quote = "> Line one\n> Line two\n> Line three"
+        self.assertEqual(block_to_block_type(multi_line_quote), "blockquote")
+        # Not all lines are quotes.
+        mixed_quote = "> Line one\nNot a quote"
+        self.assertEqual(block_to_block_type(mixed_quote), "p")
+    
+    def test_unordered_list(self):
+        # Single-line unordered list.
+        self.assertEqual(block_to_block_type("* list item"), "ul")
+        self.assertEqual(block_to_block_type("- list item"), "ul")
+        # Multi-line unordered list.
+        multi_line_ul = "* item one\n* item two\n- item three"
+        self.assertEqual(block_to_block_type(multi_line_ul), "ul")
+        # One line does not start with list marker.
+        invalid_ul = "* item one\nNot a list item"
+        self.assertEqual(block_to_block_type(invalid_ul), "p")
+    
+    def test_ordered_list(self):
+        # Valid ordered list: numbers start at 1 and increment by 1.
+        ordered_list = "1. first item\n2. second item\n3. third item"
+        self.assertEqual(block_to_block_type(ordered_list), "ol")
+        # Not valid: numbering does not start at 1.
+        invalid_ordered1 = "2. second item\n3. third item"
+        self.assertEqual(block_to_block_type(invalid_ordered1), "p")
+        # Not valid: numbering is not consecutive.
+        invalid_ordered2 = "1. first item\n3. third item"
+        self.assertEqual(block_to_block_type(invalid_ordered2), "p")
+    
+    def test_paragraph(self):
+        # Plain text that does not match any markdown format.
+        self.assertEqual(block_to_block_type("This is just a paragraph."), "p")
+        self.assertEqual(block_to_block_type("Another simple paragraph"), "p")
+
+
+if __name__ == '__main__':
+    unittest.main()
