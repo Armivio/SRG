@@ -126,6 +126,6 @@ Or an image of bears
 The end ...
 
 """
-html_to_check = """<h1>Sample Markdown</h1><p>This is some basic, sample markdown.</p><h2>Second Heading</h2><ul><li>Unordered lists, and:</li><li>More</li></ul><ol><li>One</li><li>Two</li><li>Three</li></ol><blockquote> Blockquote</blockquote><p>And <b>bold</b>, <i>italics</i> <a href="https://markdowntohtml.com">A link</a> to somewhere.</p><p>And code highlighting:</p><p>Or an image of bears</p><p><src="http://placebear.com/200/200" alt="bears"></p><p>The end ...</p>"""
+html_to_check = """<h1>Sample Markdown</h1><p>This is some basic, sample markdown.</p><h2>Second Heading</h2><ul><li>Unordered lists, and:</li><li>More</li></ul><ol><li>One</li><li>Two</li><li>Three</li></ol><blockquote>Blockquote</blockquote><p>And <b>bold</b>, <i>italics</i> <a href="https://markdowntohtml.com">A link</a> to somewhere.</p><p>And code highlighting:</p><p>Or an image of bears</p><p><src="http://placebear.com/200/200" alt="bears"></p><p>The end ...</p>"""
 if __name__ == '__main__':
     unittest.main()
