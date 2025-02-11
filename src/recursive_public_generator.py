@@ -21,9 +21,8 @@ def copy_files_recursively(source, destination): # fail for now
             os.mkdir(os.path.join(destination, directory))
             copy_files_recursively(os.path.join(source, directory), os.path.join(destination, directory))
 
-def recursive_public_generator():
-    print(os.getcwd())
-    main_dir = os.getcwd()
+def recursive_public_generator(main_dir):
+    # print(os.getcwd())
     # print("cuurent path is " + main_dir)
     if os.path.isdir(main_dir + "/public"):
         # os.removedirs(main_dir + "/public")
@@ -36,4 +35,4 @@ def recursive_public_generator():
 
 
 if __name__ == "__main__":
-    recursive_public_generator()
+    recursive_public_generator(os.getcwd())

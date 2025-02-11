@@ -32,9 +32,9 @@ def markdown_to_html_node(markdown):
             case _ if block_type.startswith("h") and block_type[1].isdigit(): # hx case
                 children_of_parent = line_to_children(block[1 + int(block_type[1]):])
             case "pre":
-                children_of_parent = LeafNode(tag=TextType.CODE, value=block[3:-3])
+                children_of_parent = [LeafNode(tag=TextType.CODE, value=block[3:-3])]
             case "blockquote":
-                children_of_parent = lines_to_children(block, how_many_delete=1)
+                children_of_parent = lines_to_children(block, how_many_delete=2)
             case "ul":
                 children_of_parent = lines_to_children(block, how_many_delete=2, is_list=True)
             case "ol":
