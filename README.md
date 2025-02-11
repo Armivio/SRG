@@ -102,7 +102,7 @@ The project uses an object-oriented approach with several key components:
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE file](https://github.com/Armivio/SRG?tab=MIT-1-ov-file) for details.
 
 ## Credits
 
