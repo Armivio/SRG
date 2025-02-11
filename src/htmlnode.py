@@ -55,7 +55,7 @@ class ParentNode(HTMLNode):
 
     def to_html(self):
         if not isinstance(self.children, list):
-            print(f"The faulty node is: {self.__repr__()}")
+            # print(f"The faulty node is: {self.__repr__()}")
             raise Exception("Somehow the children list is not a list!\nMaybe somewhere was only a node returned and not a list of nodes?")
         if not self.tag:
             raise ValueError("No tag present!")
